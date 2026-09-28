@@ -1,0 +1,8 @@
+interface:
+  display_name: "Data frontend design"
+  short_description: "Design clear data-analysis interfaces"
+  brand_color: "#2DD4BF"
+  default_prompt: "Use $data-frontend-design to improve the Data Lab upload and results experience."
+
+policy:
+  allow_implicit_invocation: true

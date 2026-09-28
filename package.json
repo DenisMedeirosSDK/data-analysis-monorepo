@@ -1,0 +1,30 @@
+{
+  "name": "data-analysis-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "setup": "npm install && npm run setup:api",
+    "setup:api": "python scripts/setup_api.py",
+    "dev": "concurrently --kill-others -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "python scripts/api.py dev",
+    "dev:web": "npm run dev --workspace @data/web",
+    "build": "npm run build --workspace @data/web",
+    "check": "npm run check --workspace @data/web",
+    "test": "python scripts/api.py test",
+    "lint": "biome lint apps/web",
+    "format": "biome format --write apps/web",
+    "format:check": "biome format apps/web",
+    "check:code": "biome check apps/web",
+    "fix": "biome check --write apps/web"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "concurrently": "^9.2.1"
+  }
+}
