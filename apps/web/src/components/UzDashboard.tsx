@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   ChevronRight,
   FileSpreadsheet,
-  Layers3,
   LoaderCircle,
   Map as MapIcon,
   PackageSearch,
@@ -223,44 +222,7 @@ export default function UzDashboard() {
     .reduce((total, item) => total + item.value, 0);
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100">
-      <aside className="fixed inset-y-0 hidden w-64 border-r border-slate-800 bg-[#0c1220] p-5 lg:block">
-        <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-teal-400 text-slate-950">
-            <Layers3 size={19} />
-          </span>
-          <div>
-            <p className="text-sm font-semibold">Data Lab</p>
-            <p className="text-xs text-slate-500">Operations intelligence</p>
-          </div>
-        </div>
-        <nav className="mt-12 space-y-1 text-sm">
-          <a
-            className="flex items-center gap-3 rounded-md bg-slate-800 px-3 py-2.5 text-white"
-            href="/uz"
-          >
-            <BarChart3 size={17} />
-            Visão operacional
-          </a>
-          <a
-            className="flex items-center gap-3 rounded-md px-3 py-2.5 text-slate-400 hover:bg-slate-800"
-            href="/capacidade"
-          >
-            <Truck size={17} />
-            Capacidade por rota
-          </a>{" "}
-          <a
-            className="flex items-center gap-3 rounded-md px-3 py-2.5 text-slate-400 hover:bg-slate-800"
-            href="/"
-          >
-            <FileSpreadsheet size={17} />
-            Analisar planilha
-          </a>
-        </nav>
-        <div className="absolute bottom-6 text-xs text-slate-600">
-          TP 654 · Operações
-        </div>
-      </aside>
-      <main className="lg:ml-64">
+      <main>
         <header className="border-b border-slate-800 bg-[#0c1220]/80 px-5 py-4 backdrop-blur sm:px-8">
           <div className="mx-auto flex max-w-[1600px] items-center justify-between">
             <div>

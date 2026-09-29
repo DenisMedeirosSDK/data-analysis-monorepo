@@ -5,6 +5,12 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import AppSidebar from "../components/AppSidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "../components/ui/sidebar";
 import "../styles/global.css";
 
 export const Route = createRootRoute({
@@ -22,7 +28,15 @@ export const Route = createRootRoute({
 function RootDocument() {
   return (
     <Document>
-      <Outlet />
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <div className="fixed left-3 top-3 z-30 lg:hidden">
+            <SidebarTrigger className="border border-slate-800 bg-[#0c1220]" />
+          </div>
+          <Outlet />
+        </SidebarInset>
+      </SidebarProvider>
     </Document>
   );
 }
@@ -33,7 +47,7 @@ function Document({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="bg-[#090d16]">
         {children}
         <Scripts />
       </body>

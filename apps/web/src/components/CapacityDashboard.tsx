@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import {
   AlertTriangle,
   CalendarDays,
@@ -18,7 +20,9 @@ import {
   YAxis,
 } from "recharts";
 import { Button } from "./ui/button";
+import { Calendar } from "./ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 type Load = {
   date: string;
@@ -52,6 +56,15 @@ type Report = {
 };
 const number = new Intl.NumberFormat("pt-BR");
 const dateFormat = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
+
+function today() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function apiDate(date: Date) {
+  return format(date, "yyyy-MM-dd");
+}
 
 function Metric({
   label,
@@ -94,6 +107,8 @@ export default function CapacityDashboard() {
     "Envie os três arquivos e selecione a data de carregamento.",
   );
   const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(today);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const summary = useMemo(
     () =>
       report?.summary.map((item) => ({
@@ -142,7 +157,7 @@ export default function CapacityDashboard() {
 
   return (
     <main className="min-h-screen bg-[#090d16] p-5 text-slate-100 sm:p-8">
-      <div className="mx-auto max-w-[1500px]">
+      <div className="mx-auto max-w-375">
         <header className="mb-7 flex flex-col justify-between gap-5 border-b border-slate-800 pb-7 md:flex-row md:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[.2em] text-teal-400">
@@ -155,9 +170,6 @@ export default function CapacityDashboard() {
               Validação sequencial do saldo disponível para cada carregamento.
             </p>
           </div>
-          <a href="/uz" className="text-sm text-slate-400 hover:text-teal-300">
-            Dashboard de UZs →
-          </a>
         </header>
         <Card className="mb-6">
           <CardHeader>
@@ -173,7 +185,7 @@ export default function CapacityDashboard() {
             <form
               ref={form}
               onSubmit={submit}
-              className="grid gap-4 lg:grid-cols-[1fr_1fr_1fr_180px_auto]"
+              className="grid gap-4 lg:grid-cols-5 justify-center items-end"
             >
               <UploadField
                 name="availability"
@@ -190,24 +202,41 @@ export default function CapacityDashboard() {
                 label="Lojas e rotas"
                 help="Loja e Max Peças"
               />
-              <label>
+              <div>
                 <span className="mb-2 block text-xs font-medium text-slate-400">
                   Data de carregamento
                 </span>
-                <span className="relative">
-                  <CalendarDays
-                    className="absolute left-3 top-3 text-slate-500"
-                    size={16}
-                  />
-                  <input
-                    required
-                    name="date"
-                    type="date"
-                    className="h-10 w-full rounded-md border border-slate-700 bg-slate-950 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-teal-400"
-                  />
-                </span>
-              </label>
-              <Button className="self-end" type="submit" disabled={loading}>
+                <input
+                  name="date"
+                  type="hidden"
+                  value={apiDate(selectedDate)}
+                />
+                <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start border-slate-700 bg-slate-950 font-normal hover:bg-slate-900"
+                    >
+                      <CalendarDays className="text-slate-500" size={16} />
+                      {format(selectedDate, "dd 'de' MMMM 'de' yyyy", {
+                        locale: ptBR,
+                      })}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={(date) => {
+                        if (!date) return;
+                        setSelectedDate(date);
+                        setCalendarOpen(false);
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <Button className="" type="submit" disabled={loading}>
                 {loading ? (
                   <LoaderCircle className="animate-spin" size={16} />
                 ) : (

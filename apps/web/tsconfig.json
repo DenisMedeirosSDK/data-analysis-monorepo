@@ -4,6 +4,10 @@
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
